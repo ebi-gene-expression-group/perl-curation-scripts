@@ -6,11 +6,6 @@ use warnings;
 # The following oracle-specific environment variables need to be set here at runtime
 # or else all oracle DB connections (e.g. to Conan DB) needed in checks will fail.
 
-BEGIN
-{
-	$ENV{ORACLE_HOME} = "/sw/arch/dbtools/oracle/product/9.2.0";
-	$ENV{ORA_NLS33}   = "/sw/arch/dbtools/oracle/product/9.2.0/ocommon/nls/admin/data";
-}
 
 =pod
 
@@ -28,21 +23,21 @@ is suitable for loading into ArrayExpress
    validate_magetab.pl -i <IDF file>
 
    validate_magetab.pl -m <Merged IDF and SDRF file>
-   
+
    validate_magetab.pl -m <Merged IDF and SDRF file>
 
 
 =item B<ADF mode:>
 
    validate_magetab.pl -a <ADF file>
-   
+
 =back
 
 =head1 DESCRIPTION
 
-Script performs basic content validation on the supplied MAGE-TAB file. Note that this script will only attempt to 
-resolve references within the given file/files. Any reference which has a Term Source REF value of 'ArrayExpress' 
-is assumed to be available in ArrayExpress and the loader will check this at a later stage. 
+Script performs basic content validation on the supplied MAGE-TAB file. Note that this script will only attempt to
+resolve references within the given file/files. Any reference which has a Term Source REF value of 'ArrayExpress'
+is assumed to be available in ArrayExpress and the loader will check this at a later stage.
 
 The script will return 0 if the file is considered safe to load.
 
@@ -66,9 +61,9 @@ The MAGE-TAB IDF file to be checked (SDRF file name will be obtained from the ID
 
 =item B<-m> C<Merged MAGE-TAB IDF and SDRF filename>
 
-A MAGE-TAB document in which a single IDF and SDRF have been combined (in that order), 
+A MAGE-TAB document in which a single IDF and SDRF have been combined (in that order),
 with the start of each section marked by [IDF] and [SDRF] respectively. Note that such
-documents are not compliant with the MAGE-TAB format specification; this format is used 
+documents are not compliant with the MAGE-TAB format specification; this format is used
 by ArrayExpress to simplify data submissions.
 
 =item B<-d> C<data directory>
@@ -206,15 +201,15 @@ if ( $args->{adf_filename} ) {
          'adf_path'   => $args->{adf_filename},
          'verbose_logging' => $args->{verbose}
     });
-    
+
     $adf_checker->check;
-    
+
     # Check for the presence of a single, valid accession number:
 
     my $arraydesign = $adf_checker->get_arraydesign;
 
     my @accession_number =  grep {$_->get_name =~/ArrayExpressAccession/} @{ $arraydesign->get_comments || []};
- 
+
     if (scalar @accession_number == 0) {
        $adf_checker->error("Comment[ArrayExpressAccession] is missing. ADF is not valid for database loading.");
     } elsif (scalar @accession_number > 1) {
@@ -222,16 +217,16 @@ if ( $args->{adf_filename} ) {
     } elsif ($accession_number[0]->get_value !~/A-[A-Z]{4}-\d+/) {
         $adf_checker->error("The accession ".$accession_number[0]->get_value." is not in ArrayExpress format.");
     }
-   
+
     my $checker_status_appender = Log::Log4perl->appender_by_name("adf_checker_status")
               or die("Could not find log appender named '\adf_checker_status\'.");
-          
-    print "\n";          
+
+    print "\n";
     print "Number of ADF warnings: "
           . $checker_status_appender->howmany("WARN") . "\n";
     print "Number of ADF errors: "
           . $checker_status_appender->howmany("ERROR") . "\n";
-            
+
 
     if ($adf_checker->has_errors) {
        exit 1;
