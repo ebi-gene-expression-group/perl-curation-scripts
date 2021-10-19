@@ -3,11 +3,11 @@ Perl-based scripts for ArrayExpress and Expression Atlas curation
 
 ## Purpose
 
-The scripts are used by ArrayExpress and Expression Atlas curators for validating and processing experiments and array designs in MAGE-TAB format. 
+The scripts are used by ArrayExpress and Expression Atlas curators for validating and processing experiments and array designs in MAGE-TAB format.
 
 
 ## Installation notes
-Using the scripts relies on the [perl-atlas-modules](https://github.com/ebi-gene-expression-group/perl-atlas-modules) being installed. This can most easily be achieved using the [bioconda package](https://anaconda.org/bioconda/perl-atlas-modules). 
+Using the scripts relies on the [perl-atlas-modules](https://github.com/ebi-gene-expression-group/perl-atlas-modules) being installed. This can most easily be achieved using the [bioconda package](https://anaconda.org/bioconda/perl-atlas-modules).
 
 Some parameters in the configuration file [ArrayExpressSiteConfig.yml](https://github.com/ebi-gene-expression-group/perl-atlas-modules/blob/develop/supporting_files/ArrayExpressSiteConfig.yml) need to be modified after installation in order to run the validation scripts:
 
@@ -52,13 +52,19 @@ launch_tracking_daemons.pl -k
 Kill all running daemons
 
 ```
-launch_tracking_daemons.pl -p MAGE-TAB 
+launch_tracking_daemons.pl -p MAGE-TAB
 ```
 Start up a MAGE-TAB checker daemon that checks MAGE-TAB submissions marked as "Waiting" in the submissions tracking database
+
+```
+single_use_tracking_daemon.pl -p MAGE-TAB -s
+```
+Run the MAGE-TAB checker once to process all eligible experiments and then quit (no tracking of instance in the DB)
+
 
 ### Manually insert an array design
 
 ```
 magetab_insert_array.pl -f adf_file_name.txt -l username
 ```
-This inserts a new array design file (ADF) into the submissions tracking DB and assigns it the next available accession number and triggers the ADF validation 
+This inserts a new array design file (ADF) into the submissions tracking DB and assigns it the next available accession number and triggers the ADF validation
