@@ -211,18 +211,6 @@ foreach my $pipeline (@pipeline_objects) {
 			my @pids = <$pid_fh>;
 			push( @child_pids, $pids[0] );
 
-			# Store pid in subs tracking
-			# ArrayExpress::AutoSubmission::DB::DaemonInstance->insert(
-			# 	{
-			# 		pipeline_id => $pipeline->id,
-			# 		daemon_type => $type,
-			# 		pid         => $pids[0],
-			# 		start_time  => date_now(),
-			# 		running     => 1,
-			# 		user        => getlogin,
-			# 	}
-			# );
-
 			unlink $pidfile;
 		}
 		else {
@@ -247,18 +235,6 @@ while (1) {
 		chomp $pid;
 		next PID if $dead{$pid};
 		$log->info("$pid is dead");
-
-		# Record that the process has died
-
-		# my @results = ArrayExpress::AutoSubmission::DB::DaemonInstance->search(
-		# 	running => 1,
-		# 	pid     => $pid,
-		# );
-		#
-		# if ( my $di = $results[0] ) {
-		# 	$di->set( running => 0, end_time => date_now() );
-		# 	$di->update;
-		# }
 
 		$dead{$pid} = 1;
 	}
