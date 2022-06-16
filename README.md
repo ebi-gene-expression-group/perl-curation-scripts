@@ -9,7 +9,7 @@ The scripts are used by ArrayExpress and Expression Atlas curators for validatin
 ## Installation notes
 Using the scripts relies on the [perl-atlas-modules](https://github.com/ebi-gene-expression-group/perl-atlas-modules) being installed. This can most easily be achieved using the [bioconda package](https://anaconda.org/bioconda/perl-atlas-modules).
 
-Some parameters in the configuration file [ArrayExpressSiteConfig.yml](https://github.com/ebi-gene-expression-group/perl-atlas-modules/blob/develop/supporting_files/ArrayExpressSiteConfig.yml) need to be modified after installation in order to run the validation scripts:
+Some parameters in the configuration file [ArrayExpressSiteConfig.yml](https://github.com/ebi-gene-expression-group/perl-atlas-modules/blob/develop/supporting_files/ArrayExpressSiteConfig.yml.default) need to be modified after installation in order to run the validation scripts:
 
 `ADF_CHECKED_LIST` and `ATLAS_EXPT_CHECKED_LIST` (or `SKIP_CHECKED_LIST_FILES`)<br>
 `ADF_DB_PATTERN_FILE`<br>
